@@ -75,9 +75,9 @@ ENDIF()
 TARGET_LINK_LIBRARIES(rtabmap rtabmap_core rtabmap_gui rtabmap_utilite ${LIBRARIES})
 IF(Qt5_FOUND)
     IF(Qt5Svg_FOUND)
-        QT5_USE_MODULES(rtabmap Widgets Core Gui Svg PrintSupport)
+        find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui Svg PrintSupport)
     ELSE()
-        QT5_USE_MODULES(rtabmap Widgets Core Gui PrintSupport)
+        find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui PrintSupport)
     ENDIF()
 ENDIF(Qt5_FOUND)
 
@@ -128,13 +128,13 @@ IF((APPLE AND BUILD_AS_BUNDLE) OR WIN32)
       # Mac OS X
       get_filename_component(OpenNI2_BIN_DIR "${OpenNI2_LIBRARY}" PATH)
     ENDIF()
-    
-    INSTALL(DIRECTORY "${OpenNI2_BIN_DIR}/OpenNI2" 
-          DESTINATION ${openni2_dest_dir} 
-          COMPONENT runtime 
+
+    INSTALL(DIRECTORY "${OpenNI2_BIN_DIR}/OpenNI2"
+          DESTINATION ${openni2_dest_dir}
+          COMPONENT runtime
           REGEX ".*pdb" EXCLUDE)
-    INSTALL(FILES "${OpenNI2_BIN_DIR}/OpenNI.ini" 
-          DESTINATION ${openni2_dest_dir} 
+    INSTALL(FILES "${OpenNI2_BIN_DIR}/OpenNI.ini"
+          DESTINATION ${openni2_dest_dir}
           COMPONENT runtime)
   ENDIF(OpenNI2_FOUND)
 

@@ -67,11 +67,18 @@ IF(QT4_FOUND)
 ELSE()
     QT5_ADD_RESOURCES(srcs_qrc ${qrc})
     QT5_WRAP_UI(moc_uis ${uis})
-    QT5_WRAP_CPP(moc_srcs ${headers_ui})
+	QT5_WRAP_CPP(moc_srcs ${headers_ui})
+	IF(Qt5_FOUND)
+		IF(Qt5Svg_FOUND)
+			find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui Svg PrintSupport)
+		ELSE()
+			find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui PrintSupport)
+		ENDIF()
+	ENDIF(Qt5_FOUND)
 ENDIF()
 
 
-SET(SRC_FILES 
+SET(SRC_FILES
 	./MainWindow.cpp
 	./PreferencesDialog.cpp
 	./KeypointItem.cpp
@@ -182,18 +189,11 @@ add_definitions(${PCL_DEFINITIONS})
 ADD_LIBRARY(rtabmap_gui ${SRC_FILES})
 # Linking with Qt libraries
 
-TARGET_LINK_LIBRARIES(rtabmap_gui rtabmap_core rtabmap_utilite ${LIBRARIES})
-IF(Qt5_FOUND)
-    IF(Qt5Svg_FOUND)
-        QT5_USE_MODULES(rtabmap_gui Widgets Core Gui Svg PrintSupport)
-    ELSE()
-        QT5_USE_MODULES(rtabmap_gui Widgets Core Gui PrintSupport)
-    ENDIF()
-ENDIF(Qt5_FOUND)
+TARGET_LINK_LIBRARIES(rtabmap_gui rtabmap_core rtabmap_utilite ${LIBRARIES} Qt5::PrintSupport)
 
 SET_TARGET_PROPERTIES(
      rtabmap_gui
-   PROPERTIES
+     PROPERTIES
      VERSION ${RTABMAP_VERSION}
      SOVERSION ${RTABMAP_MAJOR_VERSION}.${RTABMAP_MINOR_VERSION}
 )
